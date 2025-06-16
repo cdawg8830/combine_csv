@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import (
     QApplication, QMainWindow, QWidget, QVBoxLayout, QLabel, QPushButton, QListWidget, QLineEdit, QProgressBar, QTextEdit, QFileDialog, QHBoxLayout
 )
 from PyQt5.QtCore import Qt, QThread, pyqtSignal
-from PyQt5.QtGui import QFont
+from PyQt5.QtGui import QFont, QPalette, QColor
 import sys
 import os
 from csv_merger_app.core.csv_merger import CSVMerger
@@ -37,10 +37,71 @@ class MergeThread(QThread):
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("CSV Merger")
+        self.setWindowTitle("Combine CSV")
         self.setMinimumSize(650, 700)
         font = QFont("San Francisco", 11)
         self.setFont(font)
+        # Set dark palette for the app
+        dark_palette = QPalette()
+        dark_palette.setColor(QPalette.Window, QColor(35, 39, 46))
+        dark_palette.setColor(QPalette.WindowText, QColor(245, 246, 250))
+        dark_palette.setColor(QPalette.Base, QColor(35, 39, 46))
+        dark_palette.setColor(QPalette.AlternateBase, QColor(45, 49, 58))
+        dark_palette.setColor(QPalette.ToolTipBase, QColor(245, 246, 250))
+        dark_palette.setColor(QPalette.ToolTipText, QColor(35, 39, 46))
+        dark_palette.setColor(QPalette.Text, QColor(245, 246, 250))
+        dark_palette.setColor(QPalette.Button, QColor(45, 49, 58))
+        dark_palette.setColor(QPalette.ButtonText, QColor(245, 246, 250))
+        dark_palette.setColor(QPalette.BrightText, QColor(255, 0, 0))
+        dark_palette.setColor(QPalette.Highlight, QColor(79, 140, 255))
+        dark_palette.setColor(QPalette.HighlightedText, QColor(255, 255, 255))
+        QApplication.instance().setPalette(dark_palette)
+        # Apply dark theme stylesheet
+        self.setStyleSheet('''
+            QWidget { background: #23272e; color: #f5f6fa; }
+            QLabel, QLineEdit, QTextEdit, QListWidget, QPushButton {
+                color: #f5f6fa;
+                background: #23272e;
+            }
+            QLineEdit, QTextEdit, QListWidget {
+                border: 1px solid #444a57;
+                border-radius: 6px;
+                padding: 6px;
+                background: #23272e;
+                color: #f5f6fa;
+            }
+            QLineEdit:disabled, QTextEdit:disabled, QListWidget:disabled {
+                background: #23272e;
+                color: #888;
+            }
+            QLineEdit::placeholder, QTextEdit::placeholder {
+                color: #b0b3b8;
+            }
+            QPushButton {
+                background: #2d313a;
+                border: 1px solid #444a57;
+                border-radius: 6px;
+                padding: 8px 16px;
+            }
+            QPushButton:disabled {
+                background: #23272e;
+                color: #888;
+            }
+            QPushButton:hover:!disabled {
+                background: #3a3f4b;
+            }
+            QProgressBar {
+                background: #2d313a;
+                border-radius: 4px;
+            }
+            QProgressBar::chunk {
+                background-color: #4f8cff;
+                border-radius: 4px;
+            }
+            QScrollBar:vertical, QScrollBar:horizontal {
+                background: #23272e;
+            }
+        ''')
         
         # Central widget
         central = QWidget()
@@ -61,8 +122,9 @@ class MainWindow(QMainWindow):
             border-radius: 12px;
             padding: 48px;
             text-align: center;
-            background: #f5f6fa;
+            background: #23272e;
             font-size: 1.1em;
+            color: #f5f6fa;
         """)
         self.drop_area.setAlignment(Qt.AlignCenter)
         layout.addWidget(self.drop_area)
@@ -84,6 +146,7 @@ class MainWindow(QMainWindow):
         out_layout = QHBoxLayout()
         out_label = QLabel("Output Filename:")
         self.output_input = QLineEdit("merged_data.csv")
+        self.output_input.setStyleSheet("background: #23272e; color: #f5f6fa;")
         out_layout.addWidget(out_label)
         out_layout.addWidget(self.output_input)
         layout.addLayout(out_layout)
@@ -97,7 +160,7 @@ class MainWindow(QMainWindow):
         self.progress = QProgressBar()
         self.progress.setValue(0)
         self.progress.setTextVisible(False)
-        self.progress.setStyleSheet("QProgressBar { height: 8px; border-radius: 4px; } QProgressBar::chunk { background-color: #007aff; border-radius: 4px; }")
+        self.progress.setStyleSheet("QProgressBar { height: 8px; border-radius: 4px; background: #2d313a; } QProgressBar::chunk { background-color: #4f8cff; border-radius: 4px; }")
         layout.addWidget(self.progress)
 
         # Error reporting area
@@ -105,7 +168,7 @@ class MainWindow(QMainWindow):
         self.error_area.setReadOnly(True)
         self.error_area.setPlaceholderText("Error messages will appear here.")
         self.error_area.setMinimumHeight(100)
-        self.error_area.setStyleSheet("background: #f8f8fa; border-radius: 8px; padding: 8px;")
+        self.error_area.setStyleSheet("background: #23272e; color: #f5f6fa; border-radius: 8px; padding: 8px;")
         layout.addWidget(self.error_area)
 
         # Connect signals
