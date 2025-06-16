@@ -1,0 +1,2 @@
+class FileDropArea:
+    pass 

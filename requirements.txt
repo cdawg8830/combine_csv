@@ -1,0 +1,4 @@
+PyQt5
+pandas
+# Optional for packaging as .app
+pyinstaller 
