@@ -20,8 +20,8 @@ A user-friendly macOS application for merging multiple CSV files with a simple d
 ## Setup
 1. Clone this repository:
    ```sh
-   git clone https://github.com/yourusername/csv-merger-app.git
-   cd csv-merger-app
+   git clone https://github.com/yourusername/combine_csv.git
+   cd combine_csv
    ```
 2. Install dependencies:
    ```sh
@@ -37,17 +37,6 @@ A user-friendly macOS application for merging multiple CSV files with a simple d
 - Specify the output filename and start merging.
 - View error reports and preview merged data.
 
-## Packaging as a macOS App
-- To create a standalone `.app` bundle (unsigned):
-  ```sh
-  pip install pyinstaller
-  pyinstaller --windowed --onefile main.py
-  # The .app will be in the dist/ folder
-  ```
-- Share the `.app` file with friends (they may need to right-click > Open to bypass Gatekeeper).
-
-## Notes
-- This app is distributed unsigned for now. For professional distribution, consider signing and notarizing the app with an Apple Developer account.
 
 ## License
 MIT 
